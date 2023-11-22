@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bike Defender App</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
+      color: #ff6c3e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background-color: #ff6c3e;
+      color: white;
+      text-align: center;
+      padding: 1em;
+      width: 100%;
+    }
+
+    h1, h2, p {
+      margin: 0;
+    }
+
+    .app-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin: 2em;
+    }
+
+    .app-screen {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 2em;
+      width: 45%;
+      margin: 1em;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 16px;
+      text-align: center;
+      text-decoration: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 5px;
+      margin-top: 1em;
+      cursor: pointer;
+    }
+
+    .alert-message {
+      margin-top: 1em;
+      color: #FF0000;
+    }
+
+    footer {
+      background-color: #ff6c3e;
+      color: white;
+      text-align: center;
+      padding: 1em;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+      display: none;
+
+    }
+
+    .popup {
+      background-color: white;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      position: relative;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Bike Defender App</h1>
+    <p>Protegiendo tu bicicleta con tecnología innovadora</p>
+  </header>
+
+  <div class="app-container">
+    <div class="app-screen">
+      <h2>Estado de Seguridad</h2>
+      <p>¡Tu bicicleta está segura!</p>
+      <img src="img/Bicicleta.jpg" alt="Bicicleta Segura" style="max-width: 50%; height: auto;">
+      <button class="cta-button" onclick="showPopup('securityPopup')">Ver Detalles</button>
+      <p class="alert-message" id="alertMessage"></p>
+    </div>
+
+    <div class="app-screen">
+      <h2>Configuración</h2>
+      <label for="notificationSettings">Configuración de Notificaciones:</label>
+      <select id="notificationSettings">
+        <option value="default">Predeterminado</option>
+        <option value="custom">Personalizado</option>
+      </select>
+      <button class="cta-button" onclick="showPopup('settingsPopup')">Guardar Configuración</button>
+      <p class="alert-message" id="settingsMessage"></p>
+    </div>
+
+    <div class="app-screen">
+      <h2>Rastreo GPS</h2>
+      <p>Ubicación actual de tu bicicleta:</p>
+      <button class="cta-button" onclick="showPopup('locationPopup')">Rastrear Ubicación</button>
+      <p class="alert-message" id="locationMessage"></p>
+    </div>
+
+    <div class="app-screen">
+      <h2>Notificaciones de Movimiento</h2>
+      <p>Configura tus notificaciones de movimiento:</p>
+      <button class="cta-button" onclick="showPopup('notificationPopup')">Personalizar Notificaciones</button>
+      <p class="alert-message" id="notificationCustomizeMessage"></p>
+    </div>
+
+    <div class="app-screen">
+      <h2>Historial de Ruta</h2>
+      <p>Consulta el historial de ruta de tu bicicleta:</p>
+      <button class="cta-button" onclick="showPopup('historyPopup')">Ver Historial</button>
+      <p class="alert-message" id="historyMessage"></p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2023 Bike Defender - Protegiendo tu Bicicleta</p>
+  </footer>
+
+  <!-- Popups -->
+  <div id="securityPopup" class="overlay">
+    <div class="popup">
+      <span class="close-button" onclick="closePopup('securityPopup')">&times;</span>
+      <h2>Detalles de Seguridad</h2>
+      <p>Su bicicleta está protegida por sensores de movimiento y alarmas auditivas.</p>
+      <button class="cta-button" onclick="activateAlarm()">Activar Alarma</button>
+      <p class="alert-message" id="securityAlertMessage"></p>
+    </div>
+  </div>
+
+  <div id="settingsPopup" class="overlay">
+    <div class="popup">
+      <span class="close-button" onclick="closePopup('settingsPopup')">&times;</span>
+      <h2>Configuración Guardada</h2>
+      <p>Tu configuración de notificaciones ha sido guardada correctamente.</p>
+    </div>
+  </div>
+
+  <div id="locationPopup" class="overlay">
+    <div class="popup">
+      <span class="close-button" onclick="closePopup('locationPopup')">&times;</span>
+      <h2>Rastreo de Ubicación</h2>
+      <p>La ubicación de tu bicicleta está siendo rastreada en tiempo real.</p>
+      <button class="cta-button" onclick="stopTracking()">Detener Rastreo</button>
+      <p class="alert-message" id="locationAlertMessage"></p>
+    </div>
+  </div>
+
+  <div id="notificationPopup" class="overlay">
+    <div class="popup">
+      <span class="close-button" onclick="closePopup('notificationPopup')">&times;</span>
+      <h2>Personalizar Notificaciones</h2>
+      <p>Configura tus notificaciones de movimiento según tus preferencias.</p>
+      <button class="cta-button" onclick="saveNotificationSettings()">Guardar Configuración</button>
+      <p class="alert-message" id="notificationSettingsMessage"></p>
+    </div>
+  </div>
+
+  <div id="historyPopup" class="overlay">
+    <div class="popup">
+      <span class="close-button" onclick="closePopup('historyPopup')">&times;</span>
+      <h2>Historial de Ruta</h2>
+      <p>Consulta el historial de ruta de tu bicicleta.</p>
+      <button class="cta-button" onclick="closePopup('historyPopup')">Cerrar</button>
+      <p class="alert-message" id="historyAlertMessage"></p>
+    </div>
+  </div>
+
+  <div id="securityPopup" class="overlay">
+    <div class="popup">
+      <span class="close-button" onclick="closePopup('securityPopup')">&times;</span>
+      <h2>Detalles de Seguridad</h2>
+      <p>Su bicicleta está protegida por sensores de movimiento y alarmas auditivas.</p>
+      <button class="cta-button" onclick="activateAlarm()">Activar Alarma</button>
+      <button class="cta-button" onclick="activateLocks()">Activar Trabadores</button>
+      <p class="alert-message" id="securityAlertMessage"></p>
+    </div>
+  </div>
+
+  <script>
+    function activateAlarm() {
+      document.getElementById('securityAlertMessage').innerText = '¡Alarma activada! La policía está en camino.';
+    }
+
+    function showPopup(popupId) {
+      document.getElementById(popupId).style.display = 'flex';
+    }
+
+    function closePopup(popupId) {
+      document.getElementById(popupId).style.display = 'none';
+    }
+
+    function stopTracking() {
+      document.getElementById('locationAlertMessage').innerText = 'Rastreo detenido.';
+    }
+
+    function saveNotificationSettings() {
+      document.getElementById('notificationSettingsMessage').innerText = 'Configuración guardada.';
+    }
+
+    function activateAlarm() {
+      document.getElementById('securityAlertMessage').innerText = '¡Alarma activada! La policía está en camino.';
+    }
+
+    function activateLocks() {
+      var locksActivated = false; // Variable que indica si los trabadores ya están activados
+      if (!locksActivated) {
+        document.getElementById('securityAlertMessage').innerText = 'Trabadores activados. ¡Tu bicicleta está segura!';
+        locksActivated = true;
+      } else {
+        document.getElementById('securityAlertMessage').innerText = 'Los trabadores ya están activados.';
+      }
+    }
+  </script>
+</body>
+</html>
